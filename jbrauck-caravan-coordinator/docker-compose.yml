@@ -1,0 +1,28 @@
+version: "3.7"
+
+services:
+  app_proxy:
+    environment:
+      # The format here is: <app-id>_<docker-service-name>_1
+      APP_HOST: caravan-coordinator_app_1
+      APP_PORT: 2272
+      NGINX_SERVER: nginx
+      NGINX_PORT: 80
+
+  nginx:
+    image: nginx:1.21-alpine@sha256:686aac2769fd6e7bab67663fd38750c135b72d993d0bb0a942ab02ef647fc9c3
+    init: true
+    restart: on-failure
+    volumes:
+      - ${APP_DATA_DIR}/config/nginx.conf:/etc/nginx/conf.d/nginx.conf:ro
+    depends_on:
+      - app
+    networks:
+      - default
+
+  app:
+    image: jbrauck/caravan-umbrel:v1.2
+    ports:
+      - "8000:80"
+    networks:
+      - default
