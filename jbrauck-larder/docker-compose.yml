@@ -9,7 +9,7 @@ services:
       APP_PORT: 3000
 
   web:
-    image: ghcr.io/jbrauck-unchained/larder:1.0.0@sha256:b0b68009fef547ec265d4e02c68bba639ab0918e82a48cd2164830354277ee94
+    image: ghcr.io/jbrauck-unchained/larder:1.0.1@sha256:c11b93a30acf7a04b26f0603cbc88ab801298f555d2dd5cb10e1a55e614af07a
     restart: on-failure
     stop_grace_period: 1m
     init: true

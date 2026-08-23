@@ -4,7 +4,7 @@ name: Larder
 tagline: Household budgeting that never leaves your server
 icon: https://raw.githubusercontent.com/jbrauck-unchained/jbrauck-umbrel-app-store/master/jbrauck-larder/icon.svg
 category: finance
-version: "1.0.0"
+version: "1.0.1"
 port: 7373
 description: >-
   Larder is a self-hosted household budget tracker.
@@ -30,5 +30,6 @@ path: ""
 defaultUsername: ""
 defaultPassword: ""
 releaseNotes: >-
-  First release. Carries over the full transaction history originally imported
-  from the monthly spreadsheets.
+  Fixes the app failing to start: Umbrel creates the app data directory as
+  root, so the container now chowns it before dropping to an unprivileged
+  user.
