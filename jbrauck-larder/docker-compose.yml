@@ -1,0 +1,27 @@
+version: "3.7"
+
+services:
+  app_proxy:
+    environment:
+      # Format is <app-id>_<docker-service-name>_1, and the app id must match
+      # this directory's name — scripts/app passes it as --project-name.
+      APP_HOST: jbrauck-larder_web_1
+      APP_PORT: 3000
+
+  web:
+    image: ghcr.io/jbrauck-unchained/larder:1.0.0@sha256:b0b68009fef547ec265d4e02c68bba639ab0918e82a48cd2164830354277ee94
+    restart: on-failure
+    stop_grace_period: 1m
+    init: true
+    volumes:
+      # SQLite database. Under APP_DATA_DIR so Umbrel backs it up and it
+      # survives app updates.
+      - ${APP_DATA_DIR}/data:/data
+    environment:
+      DATABASE_PATH: /data/budget.db
+      # SvelteKit rejects form POSTs whose Origin doesn't match the request
+      # host. app_proxy v0.5.2 sets both of these (PROXY_TRUST_UPSTREAM
+      # defaults false); without them every form submission 403s while pages
+      # still load normally.
+      PROTOCOL_HEADER: x-forwarded-proto
+      HOST_HEADER: x-forwarded-host
